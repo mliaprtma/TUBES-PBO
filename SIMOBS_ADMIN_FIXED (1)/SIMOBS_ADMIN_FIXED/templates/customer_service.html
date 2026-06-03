@@ -1,0 +1,54 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="table-box">
+    <div class="table-header">
+        <div>
+            <h2>Data Customer Service</h2>
+            <p class="table-subtitle">Keluhan & feedback dari pelanggan bengkel</p>
+        </div>
+        <a href="/tambah_customer_service" class="btn btn-primary">
+            <i class="fa fa-plus"></i> Tambah Keluhan
+        </a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:55px;">No</th>
+                <th>Nama</th>
+                <th>Telepon</th>
+                <th>Keluhan</th>
+                <th style="width:130px;">Status</th>
+                <th style="width:130px;">Tanggal</th>
+                <th style="width:100px;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for x in data %}
+        <tr>
+            <td class="td-center">{{ loop.index }}</td>
+            <td>{{ x.nama_pelanggan }}</td>
+            <td>{{ x.telepon }}</td>
+            <td class="td-keluhan">{{ x.keluhan }}</td>
+            <td>
+                {% if x.status|lower in ['selesai', 'resolved', 'done'] %}
+                    <span class="badge badge-success">{{ x.status }}</span>
+                {% elif x.status|lower in ['proses', 'pending', 'diproses'] %}
+                    <span class="badge badge-warning">{{ x.status }}</span>
+                {% else %}
+                    <span class="badge badge-default">{{ x.status }}</span>
+                {% endif %}
+            </td>
+            <td>{{ x.tanggal|default('-', true) }}</td>
+            <td>
+                <a href="/hapus_customer_service/{{ x.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                    <i class="fa fa-trash"></i> Hapus
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
